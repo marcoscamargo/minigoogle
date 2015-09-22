@@ -8,4 +8,4 @@ main:
 	gcc -g -c main.c
 
 clean:
-	rm main ~.o 
+	rm main *.o 

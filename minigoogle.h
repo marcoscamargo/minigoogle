@@ -8,8 +8,7 @@ typedef struct node Node;
 typedef struct slist SiteList;
 
 typedef unsigned char boolean;
-const boolean true 	= 1;
-const boolean false = 0;
+
 
 int Menu();
 
@@ -25,8 +24,8 @@ boolean printSiteList();
 
 boolean printSite();
 
-boolean initialization();
+SiteList *initialization();
 
-boolean finalization();
+boolean finalization(SiteList *slist);
 
 #endif

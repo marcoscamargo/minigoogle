@@ -1,3 +1,4 @@
+#include "minigoogle.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,10 +7,14 @@
 int main (int argc, char *argv[]){
 	int opr = 1;
 
-	do{
+	SiteList *slist = initialization();
+
+	finalization(slist)
+	/*
+	do {
 		opr = Menu();
 
-		switch(opr){
+		switch(opr) {
 			case 1:
 					break;
 			case 2:
@@ -27,7 +32,7 @@ int main (int argc, char *argv[]){
 					break;
 		}
 	} while (opr);
-
+	*/
 
 
 	return 0;
