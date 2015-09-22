@@ -41,8 +41,8 @@ int Menu(){
 }
 
 boolean insertSite(SiteList *values, Site *site){
-	No *p = values->header->next;
-	No *n = (No *) malloc (sizeof(No));
+	Node *p = values->header->next;
+	Node *n = (Node *) malloc (sizeof(Node));
 
 	if(n != NULL && site != NULL){
 		n->key = site;
@@ -64,12 +64,12 @@ boolean insertSite(SiteList *values, Site *site){
 }
 
 boolean printSiteList(SiteList *values) {
-	No *p = values->header->next;
+	Node *p = values->header->next;
+
 	if (p != NULL) {
 		while (p != values->header){
 			printSite(p->key);
 		}
-
 		return true;
 	} else {
 		return false;
