@@ -9,7 +9,7 @@ int main (int argc, char *argv[]){
 
 	SiteList *slist = initialization();
 
-	finalization(slist)
+	finalization(slist);
 	/*
 	do {
 		opr = Menu();

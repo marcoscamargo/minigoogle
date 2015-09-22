@@ -85,12 +85,12 @@ boolean printSite(Site *site){
 }
 
 
-boolean printSiteList(SiteList *list) {
-	Node *p = list->header->next;
+boolean printSiteList(SiteList *slist) {
+	Node *p = slist->header->next;
 	// se a lista de sites informadas for invalida, retornara null
 	if (p != NULL) {
 		// percorre todos os valores da lista, e imprime
-		while (p != list->header){
+		while (p != slist->header){
 			printSite(p->key);
 		}
 		return true;
@@ -126,6 +126,8 @@ boolean finalization(SiteList *slist){
 		// percorre todos vetores, e libera o anterior
 		while (p != slist->header){
 			p = p->next;
+			free(p->previous->key->keyword);
+			free(p->key);
 			free(p->previous);
 		}
 		free(slist->header);
@@ -135,4 +137,31 @@ boolean finalization(SiteList *slist){
 	} else {
 		return false;
 	}
+}
+
+boolean removeSite(SiteList *slist, int code){
+	Node *p = slist->header->next;
+	// verifica se o ponteiro é valido (diferente de null)
+	if(p != NULL) {
+		// procura a posicao da chave a ser removida
+		while (p != slist->header && p->key->code != code){
+			p = p->next;
+		}
+
+		if(p != slist->header){
+			// "removendo" site da slist
+			p->previous->next = p->next;
+			p->next->previous = p->previous;
+			// liberando a memoria do valor utilizado
+			free(p->key->keyword);
+			free(p->key);
+			free(p);
+			// retorna true seja removido com sucesso
+			return true;
+		}
+	} else {
+		// caso os ponteiros sejam invalidos retorna false
+		return false;
+	}
+
 }
