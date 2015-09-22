@@ -11,7 +11,7 @@ typedef unsigned char boolean;
 const boolean true 	= 1;
 const boolean false = 0;
 
-void printMenu();
+int Menu();
 
 boolean insertSite();
 

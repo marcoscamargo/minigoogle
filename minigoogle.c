@@ -6,7 +6,7 @@
 struct sinfo {
 	int code;
 	char name[51];
-	int relevance
+	int relevance;
 	char link[101];
 	char *keyword[51];
 };
@@ -23,3 +23,21 @@ struct google {
 
 	int tam;
 };
+
+int Menu(){
+
+	int opr;
+	printf("Bem vindo ao Mini Google!\n");
+	printf("1. Inserir um novo site na lista\n");
+	printf("2. Inserir palavra-chave em um site\n");
+	printf("3. Remover um site da lista\n");
+	printf("4. Atualizar relevância de um site");
+	printf("5. Exibir a lista\n");
+	printf("6. Busca por palavra-chave\n");
+	printf("7. Sair\n");
+	printf("Digite o numero de sua operação : ");
+
+	scanf("%d", &opr);
+
+	return opr;
+}
