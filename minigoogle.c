@@ -13,7 +13,8 @@ struct sinfo {
 
 struct no {
 	Site *key;
-	struct no *header;
+	struct no *next;
+	struct no *previous;
 };
 
 struct google {
