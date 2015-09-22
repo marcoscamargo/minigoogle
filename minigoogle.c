@@ -17,7 +17,7 @@ struct no {
 	struct no *previous;
 };
 
-struct google {
+struct slist {
 	No *header;
 	int tam;
 };
@@ -40,3 +40,39 @@ int Menu(){
 	return opr;
 }
 
+boolean insertSite(SiteList *values, Site *site){
+	No *p = values->header->next;
+	No *n = (No *) malloc (sizeof(No));
+
+	if(n != NULL && site != NULL){
+		n->key = site;
+
+		while (p != values->header && p->site->relevance <	n->site->relevance){
+			p = p->next;
+		}
+
+		n->next = p->next;
+		n->previous = p;
+		p->next->previous = n; 
+		p->next = n;
+
+		return true;
+	} else {
+		return false;
+	}
+
+}
+
+boolean printSiteList(SiteList *values) {
+	No *p = values->header->next;
+	if (p != NULL) {
+		while (p != values->header){
+			printSite(p->key);
+		}
+
+		return true;
+	} else {
+		return false;
+	}
+
+}
