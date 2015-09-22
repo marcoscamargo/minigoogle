@@ -18,9 +18,7 @@ struct no {
 };
 
 struct google {
-	No *beg;
-	No *end;
-
+	No *header;
 	int tam;
 };
 
@@ -41,3 +39,4 @@ int Menu(){
 
 	return opr;
 }
+
