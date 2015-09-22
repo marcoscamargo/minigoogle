@@ -3,7 +3,7 @@
 
 typedef struct sinfo Site;
 
-typedef struct no No;
+typedef struct node Node;
 
 typedef struct slist SiteList;
 
