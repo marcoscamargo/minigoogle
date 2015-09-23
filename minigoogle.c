@@ -60,7 +60,7 @@ boolean insertSite(SiteList *list, Site *site){
 		// volta para a posicao anterior para inserir a direita
 		p = p->previous;
 
-		// insete na posicao correta
+		// insere na posicao correta
 		n->next = p->next;
 		n->previous = p;
 		p->next->previous = n; 
@@ -76,7 +76,7 @@ boolean insertSite(SiteList *list, Site *site){
 
 boolean printSite(Site *site){
 	//imprimindo codigo, nome, relevancia, e link
-	printf("%4d, %s, %d, %s", site->code, site->name, site->relevance, site->link);
+	printf("%4d, %s, %d, %s\n", site->code, site->name, site->relevance, site->link);
 	int i;
 	// imprimindo as palavras-chave conforme a quantidade
 	for(i = 0; i < site->nkeywords; i++){
@@ -164,4 +164,63 @@ boolean removeSite(SiteList *slist, int code){
 		return false;
 	}
 
+}
+
+Site* readCSVLine(FILE* csv){
+	Site *reg = (Site*)malloc(sizeof(Site));
+	char *lineRead = NULL;
+	char* temp = NULL;
+	size_t strsize = 0;
+
+	reg->keyword = NULL;
+	reg->nkeywords = 0;
+
+	//lendo uma linha
+	getline(&lineRead, &strsize, csv);
+	//removendo o '\n' final da linha, caso haja
+	if(lineRead[strlen(lineRead)-1] == '\n') lineRead[strlen(lineRead)-1] = '\0';
+
+	//recebendo o número do site
+	temp = strtok(lineRead,",");
+	reg->code = atoi(temp);
+
+	//recebendo nome
+	temp = strtok(NULL,",");
+	strcpy(reg->name,temp);
+
+	//recebendo relevancia
+	temp = strtok(NULL,",");
+	reg->relevance = atoi(temp);
+
+	//recebendo link
+	temp = strtok(NULL,",");
+	strcpy(reg->link,temp);
+
+	//recebendo palavras chave:
+	temp = strtok(NULL,","); //recebe a primeira palavra chave
+	while(temp != NULL){
+		reg->nkeywords++;
+		//alocando memoria necessaria
+		reg->keyword = (char**)realloc(reg->keyword,sizeof(char*)*(reg->nkeywords));
+		reg->keyword[(reg->nkeywords)-1] = (char*)malloc(sizeof(char)*MAX_STR_SIZE);
+		// copiando a string para o destino
+		strcpy(reg->keyword[(reg->nkeywords)-1],temp);
+		//lê a palavra chave antes da verificacao inicial da proxima iteração
+		temp = strtok(NULL,",");
+	}
+	//liberando a memoria utilizada
+	free(temp);
+	free(lineRead);
+	return reg;
+}
+
+void freeSite(Site* reg)
+{
+	int i;
+	for(i = 0; i < reg->nkeywords; i++)
+	{
+		free(reg->keyword[i]);
+	}
+	free(reg->keyword);
+	free(reg);
 }
