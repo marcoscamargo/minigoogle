@@ -1,0 +1,376 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"n",
+				"nkeywords"
+			],
+			[
+				"li",
+				"lineRead"
+			],
+			[
+				"print",
+				"printSite"
+			],
+			[
+				"not",
+				"notfound"
+			],
+			[
+				"re",
+				"regsize"
+			],
+			[
+				"end",
+				"idx_end_pos"
+			],
+			[
+				"found",
+				"foundvalue"
+			],
+			[
+				"sf",
+				"sf_str_size"
+			],
+			[
+				"str_",
+				"sf_str_size"
+			],
+			[
+				"seq",
+				"seqSearchInt"
+			],
+			[
+				"value",
+				"valueRead"
+			],
+			[
+				"idx_",
+				"idx_reg_no"
+			],
+			[
+				"se",
+				"selectkey"
+			],
+			[
+				"read",
+				"readword"
+			],
+			[
+				"ini",
+				"ini_offset"
+			],
+			[
+				"get",
+				"getEndPos"
+			],
+			[
+				"append",
+				"appendIdxFilename"
+			],
+			[
+				"int",
+				"intSort"
+			],
+			[
+				"inser",
+				"insertionSortInt"
+			],
+			[
+				"teste",
+				"teste2"
+			],
+			[
+				"dump",
+				"dumpData"
+			],
+			[
+				"strsize",
+				"stringsize"
+			],
+			[
+				"string",
+				"stringsize"
+			],
+			[
+				"op",
+				"opsort"
+			],
+			[
+				"ct",
+				"ctype_cmp"
+			],
+			[
+				"mk",
+				"mkGameMask"
+			],
+			[
+				"getN",
+				"getNCol"
+			],
+			[
+				"mchar",
+				"mchar2mint"
+			],
+			[
+				"STRsize",
+				"STRSIZE"
+			],
+			[
+				"str",
+				"STRSIZE"
+			],
+			[
+				"S",
+				"STRSIZE"
+			],
+			[
+				"rea",
+				"readMat"
+			],
+			[
+				"frq",
+				"freqmin"
+			],
+			[
+				"count",
+				"countWordsNPhrases"
+			],
+			[
+				"ajeita",
+				"ajeitaString"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/rafael/ALG/mini-google/teste.c",
+		"/home/rafael/ALG/mini-google/minigoogle.h",
+		"/home/rafael/ALG/mini-google/minigoogle.c",
+		"/home/rafael/ALG/mini-google/main.c",
+		"/home/rafael/ICC2/teste.c",
+		"/home/rafael/ALG/minigoogle-master/main.c",
+		"/home/rafael/ALG/minigoogle-master/minigoogle.h",
+		"/home/rafael/ALG/minigoogle-master/minigoogle.c",
+		"/home/rafael/ICC2/t3.c",
+		"/home/rafael/ALG/binary.c",
+		"/home/rafael/ICC2/teste3.c",
+		"/home/rafael/ICC2/teste2.c",
+		"/home/rafael/ICC2/iris-id.idx",
+		"/home/rafael/ICC2/t2.c",
+		"/home/rafael/ICC2/makefile",
+		"/home/rafael/Transferências/9277896.c",
+		"/home/rafael/ICC2/bsorte.c",
+		"/home/rafael/Transferências/9293095(1).c",
+		"/home/rafael/Transferências/teste.c",
+		"/home/rafael/Transferências/9293501.c",
+		"/home/rafael/Transferências/9278045.c",
+		"/home/rafael/ICC2/t1.c",
+		"/home/rafael/.config/sublime-text-3/Packages/User/C.sublime-settings",
+		"/home/rafael/Área de Trabalho/Melo/t5.c",
+		"/home/rafael/ALG/matriz.h",
+		"/home/rafael/ALG/matriz.c",
+		"/home/rafael/ALG/main.c",
+		"/home/rafael/ICC2/t12.c",
+		"/home/rafael/Área de Trabalho/Melo/bit.c",
+		"/home/rafael/Área de Trabalho/Melo/agebda.c",
+		"/home/rafael/Área de Trabalho/Melo/olar.c",
+		"/home/rafael/Área de Trabalho/Moacir/est_texto.c",
+		"/home/rafael/Área de Trabalho/Melo/velha.c",
+		"/home/rafael/Área de Trabalho/Melo/MMC.c",
+		"/home/rafael/Área de Trabalho/Melo/mdc.c",
+		"/home/rafael/Área de Trabalho/Melo/minmax.c",
+		"/home/rafael/Área de Trabalho/Moacir/biblioteca.c",
+		"/home/rafael/Área de Trabalho/Melo/triang.c",
+		"/home/rafael/Área de Trabalho/Melo/bignum.c",
+		"/home/rafael/Transferências/9293095.c",
+		"/home/rafael/Transferências/dobro.c",
+		"/home/rafael/Área de Trabalho/Melo/trabalho_5.c",
+		"/home/rafael/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/rafael/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
+		"/home/rafael/.config/sublime-text-3/Packages/User/C++.sublime-settings",
+		"/home/rafael/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"values",
+			"fclose(idx)",
+			"fclose",
+			"tablename",
+			"fullreadsize",
+			"entrysize",
+			"fseek(fp,0,SEEK_END);",
+			"fseek(data,0,SEEK_END);",
+			"valor_do_fseek",
+			"readline",
+			"MAIOR",
+			"'<'",
+			"'>'",
+			"print_clist_alpha",
+			");\n",
+			")\n",
+			">\n",
+			"\naaa\naaaa\naaaaa",
+			"strcmp"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"list",
+			"readsize",
+			"keysize",
+			"(fullregsize - reg.regsize)",
+			"'>'",
+			"'<'",
+			"print_clist_intervalo"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "main.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 138.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

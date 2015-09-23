@@ -12,7 +12,7 @@ struct sinfo {
 	char name[51];
 	int relevance;
 	char link[101];
-	char *keyword[51];
+	char **keyword;
 	int nkeywords;
 };
 
@@ -27,16 +27,15 @@ struct slist {
 	int tam;
 };
 
-int Menu(){
+int opSelection(){
 	int opr;
-	printf("Bem vindo ao Mini Google!\n");
 	printf("1. Inserir um novo site na lista\n");
 	printf("2. Inserir palavra-chave em um site\n");
 	printf("3. Remover um site da lista\n");
-	printf("4. Atualizar relevância de um site");
+	printf("4. Atualizar relevância de um site\n");
 	printf("5. Exibir a lista\n");
 	printf("6. Busca por palavra-chave\n");
-	printf("7. Sair\n");
+	printf("7. Sair\n\n");
 	printf("Digite o numero de sua operação : ");
 
 	// le e retorna a opcao escolhida
@@ -48,13 +47,13 @@ int Menu(){
 
 boolean insertSite(SiteList *list, Site *site){
 	Node *p = list->header->next;
-	Node *n = (Node *) malloc (sizeof(Node));
-	// verifica se o no e o site informados são valos (diferentes de null)
+	Node *n = (Node*)malloc(sizeof(Node));
+	// verifica se o no e o site informados são validos
 	if(n != NULL && site != NULL){
 		n->key = site;
 
 		// procura a posicao para inserir o novo registro
-		while (p != list->header && p->key->relevance < n->key->relevance){
+		while (p != list->header && p->key->relevance > n->key->relevance){
 			p = p->next;
 		}
 		// volta para a posicao anterior para inserir a direita
@@ -66,6 +65,7 @@ boolean insertSite(SiteList *list, Site *site){
 		p->next->previous = n; 
 		p->next = n;
 		// retorna true caso tenha inserido corretamente
+		list->tam++;
 		return true;
 	} else {
 		// caso os ponteiros sejam invalidos retorna false
@@ -74,16 +74,16 @@ boolean insertSite(SiteList *list, Site *site){
 
 }
 
-boolean printSite(Site *site){
+void printSite(Site *site){
 	//imprimindo codigo, nome, relevancia, e link
-	printf("%4d, %s, %d, %s\n", site->code, site->name, site->relevance, site->link);
+	printf("%04d, %s, %d, %s", site->code, site->name, site->relevance, site->link);
 	int i;
 	// imprimindo as palavras-chave conforme a quantidade
 	for(i = 0; i < site->nkeywords; i++){
 		printf(", %s", site->keyword[i]);
 	}
+	printf("\n");
 }
-
 
 boolean printSiteList(SiteList *slist) {
 	Node *p = slist->header->next;
@@ -92,7 +92,9 @@ boolean printSiteList(SiteList *slist) {
 		// percorre todos os valores da lista, e imprime
 		while (p != slist->header){
 			printSite(p->key);
+			p = p->next;
 		}
+		printf("\n");
 		return true;
 	} else {
 		return false;
@@ -100,7 +102,7 @@ boolean printSiteList(SiteList *slist) {
 
 }
 
-SiteList *initialization(){
+SiteList *buildSList(){
 	//alocando memoria para uma nova lista de sites
 	SiteList *slist = (SiteList *) malloc (sizeof(SiteList));
 	// verifica se a memoria alocada eh valida
@@ -119,17 +121,17 @@ SiteList *initialization(){
 	}
 }
 
-boolean finalization(SiteList *slist){
-	Node *p = slist->header->next;
+boolean clearSList(SiteList *slist){
 	// verifica se eh uma lista de sites valida
 	if(slist != NULL){
+	Node *p = slist->header->next;
 		// percorre todos vetores, e libera o anterior
-		while (p != slist->header){
+		do{
 			p = p->next;
-			free(p->previous->key->keyword);
-			free(p->key);
+			freeSite(p->previous->key);
 			free(p->previous);
-		}
+
+		}while (p != slist->header);
 		free(slist->header);
 		// libera 	list
 		free(slist);
@@ -153,12 +155,13 @@ boolean removeSite(SiteList *slist, int code){
 			p->previous->next = p->next;
 			p->next->previous = p->previous;
 			// liberando a memoria do valor utilizado
-			free(p->key->keyword);
-			free(p->key);
+			// free(p->key->keyword);
+			freeSite(p->key);
 			free(p);
 			// retorna true seja removido com sucesso
 			return true;
 		}
+		return false;
 	} else {
 		// caso os ponteiros sejam invalidos retorna false
 		return false;
@@ -214,6 +217,59 @@ Site* readCSVLine(FILE* csv){
 	return reg;
 }
 
+Site* readSite(SiteList* list){
+	Site *reg = (Site*)malloc(sizeof(Site));
+	char *lineRead = NULL;
+	char* temp = NULL;
+	size_t strsize = 0;
+	reg->code = list->tam + 1;
+
+	reg->keyword = NULL;
+	reg->nkeywords = 0;
+	printf("Digite as informações do site a serem inseridas\n");
+	printf("Formato de entrada:\n");
+	printf("\"NOME,RELEVANCIA,URL,<PALAVRAS-CHAVE>\"\n");
+	printf("cada palavra deve ser inserida entre vírgulas, exceto pela ultima.\n");
+	getchar();
+	//lendo uma linha
+	getline(&lineRead, &strsize, stdin);
+	//removendo o '\n' final da linha, caso haja
+	if(lineRead[strlen(lineRead)-1] == '\n') lineRead[strlen(lineRead)-1] = '\0';
+
+	//recebendo o número do site
+	// temp = strtok(lineRead,",");
+	// reg->code = atoi(temp);
+
+	//recebendo nome
+	temp = strtok(lineRead,",");
+	strcpy(reg->name,temp);
+
+	//recebendo relevancia
+	temp = strtok(NULL,",");
+	reg->relevance = atoi(temp);
+
+	//recebendo link
+	temp = strtok(NULL,",");
+	strcpy(reg->link,temp);
+
+	//recebendo palavras chave:
+	temp = strtok(NULL,","); //recebe a primeira palavra chave
+	while(temp != NULL){
+		reg->nkeywords++;
+		//alocando memoria necessaria
+		reg->keyword = (char**)realloc(reg->keyword,sizeof(char*)*(reg->nkeywords));
+		reg->keyword[(reg->nkeywords)-1] = (char*)malloc(sizeof(char)*MAX_STR_SIZE);
+		// copiando a string para o destino
+		strcpy(reg->keyword[(reg->nkeywords)-1],temp);
+		//lê a palavra chave antes da verificacao inicial da proxima iteração
+		temp = strtok(NULL,",");
+	}
+	//liberando a memoria utilizada
+	free(temp);
+	free(lineRead);
+	return reg;
+}
+
 void freeSite(Site* reg)
 {
 	int i;
@@ -223,4 +279,30 @@ void freeSite(Site* reg)
 	}
 	free(reg->keyword);
 	free(reg);
+}
+
+int getEndPos(FILE* fp){
+	if(fp == NULL) return -1;
+	int end = 0;
+	fseek(fp,0,SEEK_END);
+	end = ftell(fp);
+	fseek(fp,0,SEEK_SET);
+	return end;
+}
+
+boolean readCSVFile(SiteList* slist, FILE* csv){
+	Site* temp = NULL;
+	long int endpos;
+
+	if(slist == NULL){
+		printf("Invalid List\n");
+		return false;
+	}
+
+	endpos = getEndPos(csv);
+	while(ftell(csv) < endpos){
+		temp = readCSVLine(csv);
+		insertSite(slist, temp);
+	}
+	return true;
 }
