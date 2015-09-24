@@ -18,13 +18,13 @@ int opSelection();
 
 boolean insertSite(SiteList *list, Site *site);
 
-boolean insertKeyword();
+boolean insertKeyword(SiteList *slist, int code, char *keyword);
 
 boolean removeSite(SiteList *slist, int code);
 
-boolean updateRelevance();
+boolean updateRelevance(SiteList *slist, int code, int relevance);
 
-boolean printSiteList(SiteList *slist) ;
+boolean printSiteList(SiteList *slist);
 
 void printSite(Site *site);
 

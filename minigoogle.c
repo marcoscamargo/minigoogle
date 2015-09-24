@@ -158,6 +158,7 @@ boolean removeSite(SiteList *slist, int code){
 			// free(p->key->keyword);
 			freeSite(p->key);
 			free(p);
+			slist->tam--;
 			// retorna true seja removido com sucesso
 			return true;
 		}
@@ -305,4 +306,55 @@ boolean readCSVFile(SiteList* slist, FILE* csv){
 		insertSite(slist, temp);
 	}
 	return true;
+}
+
+
+boolean updateRelevance(SiteList *slist, int code, int relevance){
+	Node *p = slist->header->next;
+	// verifica se o ponteiro é valido
+	if(p != NULL){
+		// procura a posicao do registro para atualizar a relevancia
+		while (p != slist->header && p->key->code != code){
+			p = p->next;
+		}
+		// atualiza a relevancia
+		if(p != slist->header){
+			p->key->relevance = relevance;
+			return true;
+		} else {
+			printf("valor nao encontrado !\n");
+			return false;
+		}
+	} else {
+		// caso os ponteiros sejam invalidos retorna false
+		return false;
+	}
+
+}
+
+
+boolean insertKeyword(SiteList *slist, int code, char *keyword){
+	Node *p = slist->header->next;
+	// verifica se o ponteiro é valido
+	if(p != NULL){
+		// procura a posicao do registro para inserir a palavra-chave
+		while (p != slist->header && p->key->code != code){
+			p = p->next;
+		}
+		// atualiza a relevancia
+		if(p != slist->header){
+			p->key->nkeywords++;
+			p->key->keyword = (char **) realloc (p->key->keyword, sizeof(char *)*p->key->nkeywords);
+			p->key->keyword[p->key->nkeywords - 1] = (char *) malloc (sizeof(char)*MAX_STR_SIZE);	
+			strcpy(p->key->keyword[p->key->nkeywords - 1], keyword);
+			return true;
+		} else {
+			printf("código nao encontrado !\n");
+			return false;
+		}
+	} else {
+		// caso os ponteiros sejam invalidos retorna false
+		return false;
+	}
+
 }

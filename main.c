@@ -7,13 +7,16 @@
 int main (int argc, char *argv[]){
 	SiteList* slist = NULL;
 	int opr = 1;
-	int code;
+	int code, relevance;
+	char *keyworld = (char *)malloc(sizeof(char)*MAX_STR_SIZE);
 
 	FILE* csv = fopen("googlebot.csv","r");
 	slist = buildSList();
 	readCSVFile(slist,csv);
 	fclose(csv);
-	printf("Bem vindo ao Mini Google!\n");
+	
+	printf("Bem vindo ao Mini Google!\n\n");
+
 	do {
 		opr = opSelection();
 
@@ -22,19 +25,29 @@ int main (int argc, char *argv[]){
 					insertSite(slist,readSite(slist));
 					break;
 			case 2:
+					printf("Digite o código do site e a palavra-chave a ser inserida : ");
+					scanf("%d %s", &code, keyworld);
+					getchar();
+					insertKeyword(slist, code, keyworld);
 					break;
 			case 3:
+					printf("Digite o código do site a ser removido : ");
 					scanf("%d", &code);
+					getchar();
 					removeSite(slist, code);
 					break;
 			case 4:
+					printf("Digite o código do site e a nova relevância : ");
+					scanf("%d %d", &code, &relevance);
+					getchar();
+					updateRelevance(slist, code, relevance);
 					break;
 			case 5:
 					printSiteList(slist);
 					break;
 			case 6:
 					break;
-			case 7:
+			default:
 					opr = 0;
 					clearSList(slist);
 					break;
@@ -42,6 +55,6 @@ int main (int argc, char *argv[]){
 	} while (opr);
 	
 
-
+	free(keyworld);
 	return 0;
 }
