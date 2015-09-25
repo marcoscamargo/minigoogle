@@ -74,27 +74,33 @@ boolean insertSite(SiteList *list, Site *site){
 
 }
 
-void printSite(Site *site){
-	//imprimindo codigo, nome, relevancia, e link
-	printf("%04d, %s, %d, %s", site->code, site->name, site->relevance, site->link);
+void printSite(Site *site, char flag){
 	int i;
-	// imprimindo as palavras-chave conforme a quantidade
-	for(i = 0; i < site->nkeywords; i++){
-		printf(", %s", site->keyword[i]);
+	//imprimindo codigo, nome, relevancia, e link
+	switch(flag){
+		case 'f':
+			printf("%04d, %s, %d, %s", site->code, site->name, site->relevance, site->link);
+			// imprimindo as palavras-chave conforme a quantidade
+			for(i = 0; i < site->nkeywords; i++){
+				printf(", %s", site->keyword[i]);
+			}
+			printf("\n");
+			break;
+		default:
+			printf("Nome: %s\n",site->name);
+			printf("Url: %s\n",site->link);
 	}
-	printf("\n");
 }
 
-boolean printSiteList(SiteList *slist) {
+boolean printSiteList(SiteList *slist, char flag) {
 	Node *p = slist->header->next;
 	// se a lista de sites informadas for invalida, retornara null
 	if (p != NULL) {
 		// percorre todos os valores da lista, e imprime
 		while (p != slist->header){
-			printSite(p->key);
+			printSite(p->key,flag);
 			p = p->next;
 		}
-		printf("\n");
 		return true;
 	} else {
 		return false;
@@ -362,20 +368,65 @@ boolean insertKeyword(SiteList *slist, int code, char *keyword){
 SiteList* searchList(SiteList* slist, char* keyword){
 	int i;
 	SiteList* foundList = NULL;
-	Site* aux = slist->header->next;
+	Node* aux = NULL;
+	aux = slist->header->next;
 
 	//construindo lista de resultados
-	SiteList = buildSList();
+	foundList = buildSList();
 	//buscando resultados e inserindo-os na lista de resultados
 	while(aux != slist->header){
-		for (i = 0; i < aux->nkeywords; i++){
-			if(!strcmp(aux->keyword[i],keyword)) {
-				insertSite(FoundList, aux);	
-				FoundList->tam ++;
+		for (i = 0; i < aux->key->nkeywords; i++){
+			if(!strcmp(aux->key->keyword[i],keyword)) {
+				insertSite(foundList, aux->key);	
+				foundList->tam++;
 			}
 		}
+		aux = aux->next;
 	}
 	//retorna lista com os valores encontrados
 	return foundList;
 }
 
+//libera uma lista sem liberar suas chaves
+boolean clearAuxList(SiteList *slist){
+	// verifica se eh uma lista de sites valida
+	if(slist != NULL){
+	Node *p = slist->header->next;
+		// percorre todos vetores, e libera o anterior
+		do{
+			p = p->next;
+			//freeSite(p->previous->key);
+			if(p->previous != slist->header)free(p->previous);
+
+		}while (p != slist->header);
+		free(slist->header);
+		// libera 	list
+		free(slist);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//busca e imprime resultados e relacionados
+void GoogleSearch(SiteList* slist){
+	SiteList* resultList = NULL;
+	SiteList* similarList = NULL;
+	char* keyword = NULL;
+	size_t keywordSize = 0;
+
+	getline(&keyword, &keywordSize, stdin);
+	keyword[strlen(keyword)-1] = '\0';
+
+	resultList = searchList(slist, keyword);
+	if(resultList->header->next != resultList->header){
+
+		printf("Resultados encontrados: %d\n",resultList->tam-1);
+		printSiteList(resultList,'d');
+	} else {
+		printf("Resultados encontrados: 0\n");
+
+	}
+	clearAuxList(resultList);
+	free(keyword);
+}
