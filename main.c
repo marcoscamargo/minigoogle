@@ -8,7 +8,7 @@ int main (int argc, char *argv[]){
 	SiteList* slist = NULL;
 	int opr = 1;
 	int code, relevance;
-	char *keyworld = (char *)malloc(sizeof(char)*MAX_STR_SIZE);
+	char *keyword = (char *)malloc(sizeof(char)*MAX_STR_SIZE);
 
 	FILE* csv = fopen("googlebot.csv","r");
 	slist = buildSList();
@@ -26,11 +26,11 @@ int main (int argc, char *argv[]){
 					break;
 			case 2:
 					printf("Digite o código do site e a palavra-chave a ser inserida : ");
-					scanf("%d %s", &code, keyworld);
+					scanf("%d %s", &code, keyword);
 					getchar();
-					insertKeyword(slist, code, keyworld);
+					insertKeyword(slist, code, keyword);
 					break;
-			case 3:
+			clearSListe 3:
 					printf("Digite o código do site a ser removido : ");
 					scanf("%d", &code);
 					getchar();
@@ -55,6 +55,6 @@ int main (int argc, char *argv[]){
 	} while (opr);
 	
 
-	free(keyworld);
+	free(keyword);
 	return 0;
 }
