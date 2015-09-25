@@ -230,7 +230,7 @@ Site* readSite(SiteList* list){
 	printf("Digite as informações do site a serem inseridas\n");
 	printf("Formato de entrada:\n");
 	printf("\"NOME,RELEVANCIA,URL,<PALAVRAS-CHAVE>\"\n");
-	printf("cada palavra deve ser inserida entre vírgulas, exceto pela ultima.\n");
+	printf("Cada palavra deve ser inserida entre vírgulas, exceto pela ultima.\n");
 	getchar();
 	//lendo uma linha
 	getline(&lineRead, &strsize, stdin);
@@ -274,8 +274,7 @@ Site* readSite(SiteList* list){
 void freeSite(Site* reg)
 {
 	int i;
-	for(i = 0; i < reg->nkeywords; i++)
-	{
+	for(i = 0; i < reg->nkeywords; i++){
 		free(reg->keyword[i]);
 	}
 	free(reg->keyword);
@@ -358,3 +357,25 @@ boolean insertKeyword(SiteList *slist, int code, char *keyword){
 	}
 
 }
+
+//busca valores com um keyword em específico em uma lista
+SiteList* searchList(SiteList* slist, char* keyword){
+	int i;
+	SiteList* foundList = NULL;
+	Site* aux = slist->header->next;
+
+	//construindo lista de resultados
+	SiteList = buildSList();
+	//buscando resultados e inserindo-os na lista de resultados
+	while(aux != slist->header){
+		for (i = 0; i < aux->nkeywords; i++){
+			if(!strcmp(aux->keyword[i],keyword)) {
+				insertSite(FoundList, aux);	
+				FoundList->tam ++;
+			}
+		}
+	}
+	//retorna lista com os valores encontrados
+	return foundList;
+}
+
