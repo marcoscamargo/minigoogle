@@ -24,9 +24,9 @@ boolean removeSite(SiteList *slist, int code);
 
 boolean updateRelevance(SiteList *slist, int code, int relevance);
 
-boolean printSiteList(SiteList *slist);
+boolean printSiteList(SiteList *slist, char flag);
 
-void printSite(Site *site);
+void printSite(Site *site, char flag);
 
 SiteList* buildSList();
 
@@ -39,5 +39,11 @@ boolean readCSVFile(SiteList* slist, FILE* csv);
 void freeSite(Site* reg);
 
 Site* readSite();
+
+SiteList* searchList(SiteList* slist, char* keyword);
+
+boolean clearAuxList(SiteList *slist);
+
+void GoogleSearch(SiteList* slist);
 
 #endif
