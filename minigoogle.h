@@ -40,10 +40,18 @@ void freeSite(Site* reg);
 
 Site* readSite();
 
-SiteList* searchList(SiteList* copy, SiteList* resultList, char* keyword);
+void searchList(SiteList* copy, SiteList* resultList, char* keyword);
 
 boolean clearAuxList(SiteList *slist);
 
 void GoogleSearch(SiteList* slist);
+
+char **getKeywordsList(SiteList *slist, int *tam);
+
+SiteList *copyList(SiteList *original);
+
+boolean removeNode(SiteList *slist, int code);
+
+boolean HaveKeyword(Site* site, char* word);
 
 #endif

@@ -160,7 +160,6 @@ boolean removeSite(SiteList *slist, int code){
 			p->previous->next = p->next;
 			p->next->previous = p->previous;
 			// liberando a memoria do valor utilizado
-			// free(p->key->keyword);
 			freeSite(p->key);
 			free(p);
 			slist->tam--;
@@ -243,8 +242,6 @@ Site* readSite(SiteList* list){
 	if(lineRead[strlen(lineRead)-1] == '\n') lineRead[strlen(lineRead)-1] = '\0';
 
 	//recebendo o número do site
-	// temp = strtok(lineRead,",");
-	// reg->code = atoi(temp);
 
 	//recebendo nome
 	temp = strtok(lineRead,",");
@@ -363,28 +360,6 @@ boolean insertKeyword(SiteList *slist, int code, char *keyword){
 
 }
 
-//busca valores com um keyword em específico em uma lista
-SiteList* searchList(SiteList* copy, SiteList* resultList, char* keyword){
-	int i;
-	SiteList* foundList = NULL;
-	Node* aux = NULL;
-	aux = copy->header->next;
-
-	//construindo lista de resultados
-	foundList = buildSList();
-	//buscando resultados e inserindo-os na lista de resultados
-	while(aux != copy->header){
-		for (i = 0; i < aux->key->nkeywords; i++){
-			if(!strcmp(aux->key->keyword[i],keyword)) {
-				insertSite(foundList, aux->key);	
-				foundList->tam++;
-			}
-		}
-		aux = aux->next;
-	}
-	//retorna lista com os valores encontrados
-	return foundList;
-}
 
 //libera uma lista sem liberar suas chaves
 boolean clearAuxList(SiteList *slist){
@@ -394,7 +369,6 @@ boolean clearAuxList(SiteList *slist){
 		// percorre todos vetores, e libera o anterior
 		do{
 			p = p->next;
-			//freeSite(p->previous->key);
 			if(p->previous != slist->header)free(p->previous);
 
 		}while (p != slist->header);
@@ -407,21 +381,64 @@ boolean clearAuxList(SiteList *slist){
 	}
 }
 
-boolean IsInList(Site* site, SiteList* slist){
-	Node* aux = slist->header->next;
-	while(aux != slist->header){
-		if(aux->key == site) return true;
-	}
-	return false;
-}
 
 boolean HaveKeyword(Site* site, char* word){
 	int i;
+	// verifica se o site contem a palavra word
 	for(i = 0; i < site->nkeywords; i++){
 		if(!strcmp(site->keyword[i],word)) return true;
 	}
 	return false;
 }
+
+boolean removeNode(SiteList *slist, int code){
+	Node *p = slist->header->next;
+	// verifica se o ponteiro é valido (diferente de null)
+	if(p != NULL) {
+		// procura a posicao da chave a ser removida
+		while (p != slist->header && p->key->code != code){
+			p = p->next;
+		}
+
+		if(p != slist->header){
+			// "removendo" site da slist
+			p->previous->next = p->next;
+			p->next->previous = p->previous;
+			// liberando a memoria do valor utilizado
+			free(p);
+			slist->tam--;
+			// retorna true seja removido com sucesso
+			return true;
+		}
+		return false;
+	} else {
+		// caso os ponteiros sejam invalidos retorna false
+		return false;
+	}
+
+}
+
+//busca valores com um keyword em específico em uma lista
+void searchList(SiteList* copy, SiteList* resultList, char* keyword){
+	int i;
+	Node* aux = NULL;
+	Node* auxBackup = NULL;
+	aux = copy->header->next;
+	//buscando resultados e inserindo-os na lista de resultados
+	while(aux != copy->header){
+		auxBackup = aux->next;
+
+		if( HaveKeyword(aux->key,keyword) ) {
+			//insiro aux na lista de resultados
+			insertSite(resultList, aux->key);
+			// removo aux da lista cópia;
+			removeNode(copy, aux->key->code);
+		}
+	
+		aux = auxBackup;
+	}
+}
+
 
 SiteList *copyList(SiteList *original){
 	if(original == NULL) return NULL;
@@ -440,11 +457,14 @@ SiteList *copyList(SiteList *original){
 char **getKeywordsList(SiteList *slist, int *tam){
 	// inicializando vetor de strings para 1 palara que vem da stdin
 	//tam inicializado em 1.
+
 	char **keywords = (char **)malloc(sizeof(char *) * (*tam) );
+	keywords[0] = NULL;
 	size_t keywordSize = 0;
 	// lendo primeira palavra da stdin
 	getline(&keywords[0], &keywordSize, stdin);
 	keywords[0][strlen(keywords[0])-1] = '\0';
+
 
 	int i;
 	Node *aux = slist->header->next;
@@ -461,7 +481,7 @@ char **getKeywordsList(SiteList *slist, int *tam){
 					keywords = (char **) realloc (keywords, sizeof(char *) * (*tam + 1) );
 					keywords[*tam] = (char *) malloc (sizeof(char) * MAX_STR_SIZE);
 					strcpy(keywords[*tam], aux->key->keyword[i]);
-					*tam++;
+					(*tam)++;
 				
 				}
 
@@ -475,19 +495,6 @@ char **getKeywordsList(SiteList *slist, int *tam){
 	return keywords;
 }
 
-
-/*Após a busca:
-	- construo uma lista de palavras-chave;
-	- gero uma lista de registros similares
-	Para gerar a lista de registros similares:
-		- Verifico se o registro possui a palavra chave
-		- Verifico se o registro está na lista de resultados anteriores
-		- Verifico se o registro já foi impresso
-		- Insiro na lista de registros similares
-	- imprimo essa lista;*/
-
-
-
 //busca e imprime resultados e relacionados
 void GoogleSearch(SiteList* slist){
 	int i, j, nkeywords = 1;
@@ -497,6 +504,7 @@ void GoogleSearch(SiteList* slist){
 
 	// obtem a lista de palavras
 	char **keywords = getKeywordsList(slist, &nkeywords);
+
 	// busca a primeira palavra - palavra digitada
 	searchList(copy, resultList, keywords[0]);
 
@@ -507,7 +515,7 @@ void GoogleSearch(SiteList* slist){
 	} else {
 		printf("Resultados encontrados: 0\n");
 	}
-
+	printf("\n");
 	// apagando valores ja imprimidos
 	clearAuxList(resultList);
 	// gerando nova lista
@@ -524,10 +532,11 @@ void GoogleSearch(SiteList* slist){
 		printSiteList(resultList,'d');
 	}
 
-	//limpando a copia e a lista de palavras relacionadas
+	//liverando a copia e a lista de palavras relacionadas
 	clearAuxList(copy);
 	clearAuxList(resultList);
 
+	// liberando lista de palavras
 	for(i = 0; i < nkeywords; i++){
 		free(keywords[i]);
 	}
