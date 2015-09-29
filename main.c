@@ -30,7 +30,7 @@ int main (int argc, char *argv[]){
 					getchar();
 					insertKeyword(slist, code, keyword);
 					break;
-			clearSListe 3:
+			case 3:
 					printf("Digite o código do site a ser removido : ");
 					scanf("%d", &code);
 					getchar();
@@ -43,9 +43,11 @@ int main (int argc, char *argv[]){
 					updateRelevance(slist, code, relevance);
 					break;
 			case 5:
-					printSiteList(slist);
+					printSiteList(slist, 'f');
 					break;
 			case 6:
+					getchar();
+					GoogleSearch(slist);
 					break;
 			default:
 					opr = 0;
