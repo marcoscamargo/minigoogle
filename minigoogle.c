@@ -105,7 +105,6 @@ boolean printSiteList(SiteList *slist, char flag) {
 	} else {
 		return false;
 	}
-
 }
 
 SiteList *buildSList(){
@@ -408,8 +407,38 @@ boolean clearAuxList(SiteList *slist){
 	}
 }
 
+boolean IsInList(Site* site, SiteList* slist){
+	Node* aux = slist->header->next;
+	while(aux != slist->header){
+		if(aux->key == site) return true;
+	}
+	return false;
+}
+
+boolean HaveKeyword(Site* site, char* word){
+	int i;
+	for(i = 0; i < site->nkeywords; i++){
+		if(!strcmp(site->keyword[i],word)) return true;
+	}
+	return false;
+}
+
+/*Após a busca:
+	- construo uma lista de palavras-chave;
+	- gero uma lista de registros similares
+	Para gerar a lista de registros similares:
+		- Verifico se o registro possui a palavra chave
+		- Verifico se o registro está na lista de resultados anteriores
+		- Verifico se o registro já foi impresso
+		- Insiro na lista de registros similares
+	- imprimo essa lista;*/
+
+
+
 //busca e imprime resultados e relacionados
 void GoogleSearch(SiteList* slist){
+	int i, j;
+	Site* aux = NULL;
 	SiteList* resultList = NULL;
 	SiteList* similarList = NULL;
 	char* keyword = NULL;
@@ -419,13 +448,22 @@ void GoogleSearch(SiteList* slist){
 	keyword[strlen(keyword)-1] = '\0';
 
 	resultList = searchList(slist, keyword);
+	//verificando se a lista de resultados está vazia
 	if(resultList->header->next != resultList->header){
-
 		printf("Resultados encontrados: %d\n",resultList->tam-1);
 		printSiteList(resultList,'d');
+/*		aux = resultList->header->next;
+		while(aux != resultList->header){
+			for(j = 0; j < (aux->key->nkeywords)-1){
+				similarList = buildSList();
+				similarList = searchList(slist,aux->key->keyword[j]);
+				printf("\n\n Sugestões:\n");
+				printSiteList(similarList,'d');
+				clearAuxList(similarList);
+			}*/
+		/*}*/
 	} else {
 		printf("Resultados encontrados: 0\n");
-
 	}
 	clearAuxList(resultList);
 	free(keyword);
