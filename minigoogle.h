@@ -40,7 +40,7 @@ void freeSite(Site* reg);
 
 Site* readSite();
 
-SiteList* searchList(SiteList* slist, char* keyword);
+SiteList* searchList(SiteList* copy, SiteList* resultList, char* keyword);
 
 boolean clearAuxList(SiteList *slist);
 

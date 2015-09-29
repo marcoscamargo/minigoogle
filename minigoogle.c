@@ -364,16 +364,16 @@ boolean insertKeyword(SiteList *slist, int code, char *keyword){
 }
 
 //busca valores com um keyword em específico em uma lista
-SiteList* searchList(SiteList* slist, char* keyword){
+SiteList* searchList(SiteList* copy, SiteList* resultList, char* keyword){
 	int i;
 	SiteList* foundList = NULL;
 	Node* aux = NULL;
-	aux = slist->header->next;
+	aux = copy->header->next;
 
 	//construindo lista de resultados
 	foundList = buildSList();
 	//buscando resultados e inserindo-os na lista de resultados
-	while(aux != slist->header){
+	while(aux != copy->header){
 		for (i = 0; i < aux->key->nkeywords; i++){
 			if(!strcmp(aux->key->keyword[i],keyword)) {
 				insertSite(foundList, aux->key);	
@@ -423,6 +423,59 @@ boolean HaveKeyword(Site* site, char* word){
 	return false;
 }
 
+SiteList *copyList(SiteList *original){
+	if(original == NULL) return NULL;
+
+	SiteList *copy = buildSList();
+	Node *p = original->header->next;
+
+	while(original->header != p){
+		insertSite(copy, p->key);	
+		p = p->next;
+	}
+
+	return copy;
+}
+
+char **getKeywordsList(SiteList *slist, int *tam){
+	// inicializando vetor de strings para 1 palara que vem da stdin
+	//tam inicializado em 1.
+	char **keywords = (char **)malloc(sizeof(char *) * (*tam) );
+	size_t keywordSize = 0;
+	// lendo primeira palavra da stdin
+	getline(&keywords[0], &keywordSize, stdin);
+	keywords[0][strlen(keywords[0])-1] = '\0';
+
+	int i;
+	Node *aux = slist->header->next;
+
+	while(slist->header != aux){
+		// verifica se exista a palavra buscada no site
+		if( HaveKeyword(aux->key, keywords[0]) ){
+			// se existir percorre todas palavras chaves do site
+			for(i = 0; i < aux->key->nkeywords; i++){
+				// se for diferente da palavra buscada (strcmp retorna 0 == false quando é igual)
+				//	copia para a lista
+				if( strcmp(aux->key->keyword[i], keywords[0]) ){
+					
+					keywords = (char **) realloc (keywords, sizeof(char *) * (*tam + 1) );
+					keywords[*tam] = (char *) malloc (sizeof(char) * MAX_STR_SIZE);
+					strcpy(keywords[*tam], aux->key->keyword[i]);
+					*tam++;
+				
+				}
+
+			}
+
+		}
+		aux = aux->next;
+	}
+
+
+	return keywords;
+}
+
+
 /*Após a busca:
 	- construo uma lista de palavras-chave;
 	- gero uma lista de registros similares
@@ -437,34 +490,47 @@ boolean HaveKeyword(Site* site, char* word){
 
 //busca e imprime resultados e relacionados
 void GoogleSearch(SiteList* slist){
-	int i, j;
-	Site* aux = NULL;
+	int i, j, nkeywords = 1;
 	SiteList* resultList = NULL;
-	SiteList* similarList = NULL;
-	char* keyword = NULL;
-	size_t keywordSize = 0;
+	SiteList *copy = copyList(slist);
+	resultList = buildSList();
 
-	getline(&keyword, &keywordSize, stdin);
-	keyword[strlen(keyword)-1] = '\0';
+	// obtem a lista de palavras
+	char **keywords = getKeywordsList(slist, &nkeywords);
+	// busca a primeira palavra - palavra digitada
+	searchList(copy, resultList, keywords[0]);
 
-	resultList = searchList(slist, keyword);
 	//verificando se a lista de resultados está vazia
 	if(resultList->header->next != resultList->header){
-		printf("Resultados encontrados: %d\n",resultList->tam-1);
+		printf("Resultados encontrados: %d\n",resultList->tam);
 		printSiteList(resultList,'d');
-/*		aux = resultList->header->next;
-		while(aux != resultList->header){
-			for(j = 0; j < (aux->key->nkeywords)-1){
-				similarList = buildSList();
-				similarList = searchList(slist,aux->key->keyword[j]);
-				printf("\n\n Sugestões:\n");
-				printSiteList(similarList,'d');
-				clearAuxList(similarList);
-			}*/
-		/*}*/
 	} else {
 		printf("Resultados encontrados: 0\n");
 	}
+
+	// apagando valores ja imprimidos
 	clearAuxList(resultList);
-	free(keyword);
+	// gerando nova lista
+	resultList = buildSList();
+
+	//buscando por palavras relacionadas
+	for(i = 1; i < nkeywords; i++){
+		searchList(copy, resultList, keywords[i]);
+	}
+
+	//imprimindo sites relacionados
+	if(resultList->header->next != resultList->header){
+		printf("Resultados relacionados: %d\n",resultList->tam);
+		printSiteList(resultList,'d');
+	}
+
+	//limpando a copia e a lista de palavras relacionadas
+	clearAuxList(copy);
+	clearAuxList(resultList);
+
+	for(i = 0; i < nkeywords; i++){
+		free(keywords[i]);
+	}
+	free(keywords);
+
 }
