@@ -1,0 +1,16 @@
+criar repositorio
+
+configurar ssh para facilitar as coisas
+	ls -al ~/.ssh
+	ssh-keygen -t rsa -b 4096 -C "marcos.cesar.camargo@usp.br"
+	cat ~/.ssh/id_rsa.pub -> copiar no github
+
+
+git init - inicia o git na pasta
+git add - adiciona arquivo para o git
+git commit -m "message" realiza o commit
+git status and git log - status
+git revert HASHCODE - reverte um commit
+
+
+arquivo .gitignore => ignora os arquivos com esse nome
